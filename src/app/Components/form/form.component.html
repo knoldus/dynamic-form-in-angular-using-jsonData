@@ -1,0 +1,77 @@
+<section class="p-10 mt-10">
+  <div class="img-section">
+    <h1 class="text-center text-5xl">Angular Dynamic forms</h1>
+  </div>
+
+
+  <div class="form-section mt-10">
+    <form (ngSubmit)="onSubmit()" [formGroup]="myForm" *ngIf="formData.length != 0">
+      <ng-container *ngFor="let control of formData">
+        <!--      Input type text-->
+        <div *ngIf="['text','password','email','number','search','tel','url'].includes(control.type)">
+          <mat-form-field appearance="outline"
+                          class="mb-2 sm:pr-4 w-full">
+            <mat-label class="input-text">{{control.label}}</mat-label>
+            <input [formControlName]="control.name"
+                   [type]="control.type"
+                   [value]="control.value"
+                   class="input-text"
+                   matInput>
+            <mat-error class="text-base">
+              <ng-container class="error-message" *ngIf="myForm.controls[control.name].hasError('required')">
+                This field is required
+              </ng-container>
+              <ng-container *ngIf="myForm.controls[control.name].hasError('minlength')">
+                Minimum length should be 10 characters
+              </ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!--      Input type textarea-->
+        <div *ngIf="control.type === 'textarea'">
+          <mat-form-field appearance="outline" class="w-full mb-2 sm:pr-4"
+                          id="mat-form-textarea">
+            <mat-label class="para-content">{{control.label}}</mat-label>
+            <textarea [formControlName]="control.name" class="support-input-textarea"
+                      matInput
+                      rows="8"></textarea>
+            <mat-error>
+              <ng-container class="error-message">
+                Error textarea
+              </ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!--      Mat CheckBox-->
+        <div *ngIf="control.type === 'checkbox'">
+          <mat-checkbox class="mb-2 pl-1 text-left text-main-blue "
+                        [formControlName]="control.name"
+                        [checked]="control.value"
+                        color="primary">
+            <p class="whitespace-pre-line">{{control.label}}</p>
+          </mat-checkbox>
+          <mat-error class="text-base">
+            <ng-container
+              class="error-message">
+              <p class="text-left text-small font-sans-medium pl-6"></p>
+            </ng-container>
+          </mat-error>
+        </div>
+
+        <div *ngIf="control.type === 'toggle'">
+          <section class="example-section">
+            <mat-slide-toggle
+              class="example-margin"
+              [formControlName]="control.name"
+              [checked]="control.value">
+              {{control.label}}
+            </mat-slide-toggle>
+          </section>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+
+</section>
